@@ -237,7 +237,6 @@ observation, info = env.reset(seed=30)
 # Run value iteration
 V_star, Q_star = value_iteration(env)
 
-
 # Define the maximum number of iterations
 max_iter_number = 1000
 wins = 0
