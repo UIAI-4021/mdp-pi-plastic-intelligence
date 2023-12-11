@@ -192,8 +192,8 @@ def value_iteration(env, gamma=0.9, theta=1e-50):
 
     V = np.zeros(env.nS)  # Initialize the state-value function with zeros
     Q = np.zeros((env.nS, env.nA))  # Initialize the action-value function with zeros
-
     i = 0
+
     while True:
         delta = 0  # Initialize delta to track changes in the value function
         for s in range(env.nS):  # For each state in the environment
@@ -206,7 +206,6 @@ def value_iteration(env, gamma=0.9, theta=1e-50):
                     left= sum([p * (r + gamma * V[s_]) for p, s_, r, _ in env.P[s][3]])
                     right = sum([p * (r + gamma * V[s_]) for p, s_, r, _ in env.P[s][1]])
                     action = sum([p * (r + gamma * V[s_]) for p, s_, r, _ in env.P[s][a]])
-
                     summ = left + right + action
 
                 elif a == 1 or a == 3 :
@@ -214,9 +213,7 @@ def value_iteration(env, gamma=0.9, theta=1e-50):
                     up= sum([p * (r + gamma * V[s_]) for p, s_, r, _ in env.P[s][0]])
                     down = sum([p * (r + gamma * V[s_]) for p, s_, r, _ in env.P[s][2]])
                     action = sum([p * (r + gamma * V[s_]) for p, s_, r, _ in env.P[s][a]])
-
                     summ = up + down + action
-
 
                 Q[s][a] = summ
 
@@ -225,22 +222,20 @@ def value_iteration(env, gamma=0.9, theta=1e-50):
 
         i+=1
 
-
         if delta < theta:
             # If the change in the value function is less than the threshold
             print('converged at ', i)
             break
 
-    policy = np.argmax(Q, axis=1)  # The optimal policy is the one that maximizes the action-value function
 
-    return V, Q, policy
+    return V, Q
 
 # Create an instance of your CliffWalking environment
 env = CliffWalking(render_mode="human")
 observation, info = env.reset(seed=30)
 
 # Run value iteration
-V_star, Q_star, _ = value_iteration(env)
+V_star, Q_star = value_iteration(env)
 
 
 # Define the maximum number of iterations
