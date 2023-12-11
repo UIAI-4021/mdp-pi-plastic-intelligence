@@ -203,13 +203,33 @@ def value_iteration(env, gamma=0.9, theta=1e-50):
 
             for a in range(env.nA):  # For each action in the environment
 
-                Q[s][a] = sum([p * (r + gamma * V[s_]) for p, s_, r, _ in env.P[s][a]])
+                if a == 0 or a == 2 :
+
+                    left= sum([p * (r + gamma * V[s_]) for p, s_, r, _ in env.P[s][3]])
+                    right = sum([p * (r + gamma * V[s_]) for p, s_, r, _ in env.P[s][1]])
+                    print('left : ', left)
+                    print('right : ', right)
+                    action = sum([p * (r + gamma * V[s_]) for p, s_, r, _ in env.P[s][a]])
+
+                    summ = left + right + action
+
+                elif a == 1 or a == 3 :
+
+                    up= sum([p * (r + gamma * V[s_]) for p, s_, r, _ in env.P[s][0]])
+                    down = sum([p * (r + gamma * V[s_]) for p, s_, r, _ in env.P[s][2]])
+                    action = sum([p * (r + gamma * V[s_]) for p, s_, r, _ in env.P[s][a]])
+
+                    summ = up + down + action
+
+
+                Q[s][a] = summ
 
             V[s] = max(Q[s])  # Update the value function
             delta = max(delta, abs(v - V[s]))  # Update delta
 
         i+=1
-        print(V)
+
+
         if delta < theta:
             # If the change in the value function is less than the threshold
             print('converged at ', i)
