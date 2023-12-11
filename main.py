@@ -4,7 +4,6 @@ import gymnasium as gym
 from gymnasium.envs.toy_text.cliffwalking import CliffWalkingEnv
 from gymnasium.error import DependencyNotInstalled
 from os import path
-import time
 
 
 # Do not change this class
@@ -189,7 +188,6 @@ class CliffWalking(CliffWalkingEnv):
                 np.array(pygame.surfarray.pixels3d(self.window_surface)), axes=(1, 0, 2)
             )
 
-
 def value_iteration(env, gamma=0.9, theta=1e-50):
 
     V = np.zeros(env.nS)  # Initialize the state-value function with zeros
@@ -207,8 +205,6 @@ def value_iteration(env, gamma=0.9, theta=1e-50):
 
                     left= sum([p * (r + gamma * V[s_]) for p, s_, r, _ in env.P[s][3]])
                     right = sum([p * (r + gamma * V[s_]) for p, s_, r, _ in env.P[s][1]])
-                    print('left : ', left)
-                    print('right : ', right)
                     action = sum([p * (r + gamma * V[s_]) for p, s_, r, _ in env.P[s][a]])
 
                     summ = left + right + action
@@ -264,10 +260,12 @@ for i in range(max_iter_number):
     env.s = next_state
 
     if done or truncated:
-        print(f'Epoch : {i} Done!')
+        print(f'At Epoch : {i} Agent Succeeded !')
         wins += 1
         print(f'Wins : {wins}')
         observation, info = env.reset()
 
 # Close the environment
 env.close()
+
+#Implemented by Arian Jafari, Mohammad Hassan Heydari
